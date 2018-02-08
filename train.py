@@ -45,7 +45,7 @@ def train_imageAVmodel():
     parameter_file = "params.json"
     params = json.loads(open(parameter_file).read())
 
-	x_raw, y_raw = get_features(training_file, data_directory, params['VGG_weights'])
+	x_raw, y_raw = get_features(training_file, data_directory, params['VGG_weights'], params['gistFile'])
 
 	x = np.array(x_raw)
 	y = np.array(y_raw)

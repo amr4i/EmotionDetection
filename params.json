@@ -6,5 +6,6 @@
 	"batch_size": 1000,
 	"num_epochs": 5,
 	"evaluate_every": 100,
-	"VGG_weights": "/home/amrits/UGP/vgg16_weights.npz"
+	"VGG_weights": "/home/amrits/UGP/vgg16_weights.npz",
+	"gistFile": "gists.txt"
 }
