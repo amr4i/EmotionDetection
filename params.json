@@ -3,9 +3,10 @@
 	"num_neurons_in_layers": [1588, 3000, 1000, 1000, 1],
 	"learning_rate": 0.0001,
 	"momentum": 0.9,
-	"batch_size": 1000,
-	"num_epochs": 5,
+	"batch_size": 100,
+	"num_epochs": 1,
 	"evaluate_every": 100,
-	"VGG_weights": "/home/amrits/UGP/vgg16_weights.npz",
-	"gistFile": "gists.txt"
+	"VGG_weights": "/data/amrits/ugp/weights/vgg16_weights.npz",
+	"gistFile": "gists.txt",
+	"semF_file": "semantic_features.pickle"
 }

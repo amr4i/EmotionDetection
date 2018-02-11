@@ -8,6 +8,7 @@ from lbp.LocalBinaryPatterns import LocalBinaryPatterns
 
 names=[]
 gists=[]
+sem_features = {}
 
 def load_gistfile(gistFile):
 	with open(gistFile, 'r') as g:
@@ -16,8 +17,10 @@ def load_gistfile(gistFile):
 			name, gist = line.split(":")
 			names.append(name)
 			gists.append(gist)
-	# print names
-	# print gists
+	
+def load_sematic_features(file):
+	with open(file, 'rb') as handle:
+		sem_features = pickle.load(handle)
 
 def get_vgg_object_features(img, path_to_weights):
 	vggDesc = vgg.predict(img, path_to_weights)
@@ -43,12 +46,13 @@ def extract_feature_vector(imagepath, VGG_weights):
 	LBP_Desc = get_lbp(grayImage)
 	GIST_Desc = get_gist(imagename)
 	VGG_Desc = get_vgg_object_features(image, VGG_weights)
+	Sem_Desc = sem_features[imagename]
 	# print "-------------> LBP Descriptor: \n", LBP_Desc
 	# print "-------------> VGG Descriptor: \n", VGG_Desc
 	
 	# TO BE FINALIZED
-	feature_vector = np.concatenate((LBP_Desc, VGG_Desc, GIST_Desc))
-	print np.size(feature_vector)
+	feature_vector = np.concatenate((LBP_Desc, VGG_Desc, GIST_Desc, Sem_Desc))
+	# print np.size(feature_vector)
 	return feature_vector
 
 
@@ -58,7 +62,7 @@ def extract_feature_vector(imagepath, VGG_weights):
 training_file: a document where each line contains the name of the image file, and its corresponding A-V value, separated by a comma. 
 directory: path to folder that contains all the image files.
 """
-def get_features(training_file ,directory, VGG_weights_file, gistFile="gists.txt"):
+def get_features(training_file ,directory, VGG_weights_file, gistFile="gists.txt", semF_file='sematic_feature.pickle'):
 	features = []
 	labels = []
 	
@@ -66,6 +70,7 @@ def get_features(training_file ,directory, VGG_weights_file, gistFile="gists.txt
 		
 		files = trainFile.readlines()
 		load_gistfile(gistFile)
+		load_semantic_features(semF_file)
 
 		for file in files:
 			filename, file_label = file.split(",")
