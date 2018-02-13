@@ -82,6 +82,7 @@ def train_imageAVmodel():
     logging.info('x_train: {}, x_val: {}, x_test: {}'.format(len(x_train), len(x_val), len(x_test)))
     logging.info('y_train: {}, y_val: {}, y_test: {}'.format(len(y_train), len(y_val), len(y_test)))
 
+
     """ build a graph """
     graph = tf.Graph()
     with graph.as_default():
@@ -112,13 +113,10 @@ def train_imageAVmodel():
             # One training step: train the model with one batch
             def train_step(x_batch, y_batch):
                 y_batch = np.reshape(y_batch, (len(y_batch),1))
-                print "debug_1"
                 feed_dict = {
                     imageAV.input_x: x_batch,
                     imageAV.input_y: y_batch}
                 _, step, loss, loss_S = sess.run([train_op, global_step, imageAV.loss, imageAV.loss_summary], feed_dict)
-                print "training loss"
-                print step, loss 
                 return loss, loss_S
 
             # One evaluation step: evaluate the model with one batch
@@ -133,7 +131,7 @@ def train_imageAVmodel():
             writer = tf.summary.FileWriter(logs_path, graph=tf.get_default_graph())
 
             train_batches = batch_iter(list(zip(x_train, y_train)), params['batch_size'],params['num_epochs'])
-            min_loss, min_at_step = 0, 0
+            min_loss, min_at_step = float("inf"), 0
 
             logging.info('<--------------Training has begun--------------->')
 
@@ -141,11 +139,8 @@ def train_imageAVmodel():
             for train_batch in train_batches:
                 x_train_batch, y_train_batch = zip(*train_batch)
                 train_loss, _train_loss_summary = train_step(x_train_batch, y_train_batch)
-                print "debug_2"
                 current_step = tf.train.global_step(sess, global_step)
-                print "debug_3"
                 logging.debug('Train Step {}, Loss: {}'.format(current_step,train_loss))
-                print "debug_4"
                 writer.add_summary(_train_loss_summary, current_step)
                 
                 """ evaluate the model with x_val and y_val (batch by batch)"""
@@ -158,16 +153,16 @@ def train_imageAVmodel():
                         total_val_loss += val_loss
 
                     writer.add_summary(_val_loss_summary, current_step)
-                    logging.info('Total loss on val set: {}'.format(total_val_loss))
-                    logging.info('Average loss on val set: {}'.format(total_val_loss/len(y_val)))
+                    avg_val_loss = total_val_loss/len(y_val)
+                    logging.debug('At step {},  Total loss on val set: {}'.format(current_step, total_val_loss))
+                    logging.info('At step {}, Average loss on val set: {}'.format(current_step, avg_val_loss))
 
                     """ save the model if it is the best based on loss on the val set """
-                    if total_val_loss <= min_loss and not min_loss == 0:
-                        min_loss, min_at_step = total_val_loss, current_step
-
+                    if avg_val_loss <= min_loss:
+                        min_loss, min_at_step = avg_val_loss, current_step
                         path = saver.save(sess, checkpoint_prefix, global_step=current_step)
-                        logging.info('Saved model {} at step {}'.format(path, min_at_step))
-                        logging.info('Best accuracy {} at step {}'.format(min_loss, min_at_step))
+                        logging.debug('Saved model {} at step {}'.format(path, min_at_step))
+                        logging.debug('Best accuracy {} at step {}'.format(min_loss, min_at_step))
 
             """ predict x_test (batch by batch)"""
             test_batches = batch_iter(list(zip(x_test, y_test)), params['batch_size'], 1)
@@ -184,7 +179,7 @@ def train_imageAVmodel():
 
             """ saving the model """
             save_path = saver.save(sess, saved_model_dir)
-            logging.info('The model has been saved at path: {}'.foramt(save_path))
+            logging.info('The model has been saved at path: {}'.format(save_path))
 
 if __name__ == '__main__':
     train_imageAVmodel()

@@ -43,7 +43,7 @@ class ImageAVmodel(object):
 
         # Squared loss
         with tf.name_scope('loss'):
-            self.loss = tf.losses.mean_squared_error(labels = self.input_y, predictions = self.prediction) #  only named arguments accepted
+            self.loss = tf.losses.mean_squared_error(labels = self.input_y, predictions = self.prediction)  #  only named arguments accepted
 
         with tf.name_scope('loss_summary'):
             self.loss_summary = tf.summary.scalar('loss_summary', self.loss)
