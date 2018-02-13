@@ -110,16 +110,15 @@ def get_prediction_features(training_file ,directory, VGG_feature_file="vgg.pick
 		load_semantic_features(semF_file)
 		load_vgg_features(VGG_feature_file)
 		for file in files:
-			filename, file_label = file.split(",")
+			filename, _ = file.split(",")
 			filepath = os.path.join(directory, filename)
 			if not os.path.isabs(filepath):
 				filepath = os.path.join(os.path.dirname(__file__), filepath)
 			feature_vector = extract_feature_vector(filepath)
 			features.append(feature_vector)
-			labels.append(file_label)
+			
 		
-		return features, labels
-
+		return features
 	
 if __name__ == "__main__":
 	imagepath = sys.argv[1]

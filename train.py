@@ -178,8 +178,8 @@ def train_imageAVmodel():
             logging.info('The training is complete.')
 
             """ saving the model """
-            save_path = saver.save(sess, saved_model_dir)
-            logging.info('The model has been saved at path: {}'.format(save_path))
+            # save_path = saver.save(sess, saved_model_dir)
+            # logging.info('The model has been saved at path: {}'.format(save_path))
 
 if __name__ == '__main__':
     train_imageAVmodel()

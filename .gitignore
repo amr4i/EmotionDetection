@@ -1,3 +1,5 @@
 tmp
 
 *.pyc
+*log
+*.sh
