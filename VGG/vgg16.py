@@ -10,11 +10,14 @@
 
 import os
 import sys
+import pickle
 import tensorflow as tf
 import numpy as np
 from scipy.misc import imread, imresize
 from imagenet_classes import class_names
 
+
+outDict = {}
 
 class vgg16:
     def __init__(self, imgs, weights=None, sess=None):
@@ -255,25 +258,52 @@ class vgg16:
             # print i, k, np.shape(weights[k])
             sess.run(self.parameters[i].assign(weights[k]))
 
-def predict(img, path_to_weights):
+def predict(imgs_file, imgs_dir, path_to_weights="vgg16_weights.npz"):
     sess = tf.Session()
     # dir_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     imgs = tf.placeholder(tf.float32, [None, 224, 224, 3])
     vgg = vgg16(imgs, path_to_weights, sess)
 
-    # img1 = imread('laska.png', mode='RGB')
-    img1 = imresize(img, (224, 224))
+    imgs_ = []
+    
+    filenames = []
+    with open(imgs_file , 'r') as trainFile:
+        files = trainFile.readlines()
+        for file in files:
+            filename, file_label = file.split(",")
+            filenames.append(filename)
+            imgPath = os.path.join(imgs_dir, filename)
 
-    prob = sess.run(vgg.probs, feed_dict={vgg.imgs: [img1]})[0]
+            img = imread(imgPath, mode="RGB")
+            # img1 = imread('laska.png', mode='RGB')
+            img1 = imresize(img, (224, 224))
+            
+
+            print('Extracting VGG features for {}'.format(filename))
+
+            prob = sess.run(vgg.probs, feed_dict={vgg.imgs: [img1]})[0]
+            outDict[filename] = prob
     # for i in range(0, len(prob)):
     #     print class_names[i], prob[i]
-    preds = (np.argsort(prob)[::-1])[0:5]
+    # preds = (np.argsort(prob)[::-1])[0:5]
     # for p in preds:
     #     print class_names[p], prob[p]
     # print len(prob)
-    return prob
+    # return prob
+            
+        # dict(zip(filenames, prob))
+
+    # print len(outDict)
+    # print outDict['Sn133.bmp']
+    # return outDict
+    with open('../vgg.pickle', 'wb') as handle:
+        pickle.dump(outDict, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+
 
 if __name__ == '__main__':
-    imgPath = sys.argv[1]   
-    img = imread(imgPath, mode="RGB")
-    predict(img)
+    imgsFile = sys.argv[1]   
+    imgsDir = sys.argv[2]
+    vggWeights = sys.argv[3]
+    predict(imgsFile, imgsDir, vggWeights)
+    # img = imread(imgPath, mode="RGB")

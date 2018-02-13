@@ -1,0 +1,15 @@
+02-14 00:42 INFO     x_train: 591, x_val: 66, x_test: 73
+02-14 00:42 INFO     y_train: 591, y_val: 66, y_test: 73
+02-14 00:42 INFO     <--------------Training has begun--------------->
+02-14 00:42 DEBUG    Train Step 1, Loss: 30591372.0
+02-14 00:42 DEBUG    Train Step 2, Loss: 1.88819764675e+13
+02-14 00:42 INFO     Total loss on val set: 1.03666510141e+34
+02-14 00:42 INFO     Average loss on val set: 1.57070469911e+32
+02-14 00:42 DEBUG    Train Step 3, Loss: 1.04394641714e+34
+02-14 00:42 DEBUG    Train Step 4, Loss: inf
+02-14 00:42 INFO     Total loss on val set: nan
+02-14 00:42 INFO     Average loss on val set: nan
+02-14 00:42 DEBUG    Train Step 5, Loss: nan
+02-14 00:42 DEBUG    Train Step 6, Loss: nan
+02-14 00:42 INFO     Total loss on val set: nan
+02-14 00:42 INFO     Average loss on val set: nan

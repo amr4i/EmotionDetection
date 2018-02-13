@@ -54,7 +54,10 @@ def get_feature_vector(img, pred, args):
     img = (img.numpy().transpose((1, 2, 0)) * 255).astype(np.uint8)
 
     # prediction
-    pred_ = np.argmax(pred.numpy(), axis=0) + 1
+    # np.set_printoptions(threshold=np.nan)
+    pred_ = np.argmax(pred.numpy(), axis=0)
+    # print np.amin(pred_)
+    # print np.amax(pred_)
     vec_ = np.apply_along_axis(np.bincount, 1, pred_, minlength=150)
     vec = normalize(np.sum(vec_, axis=0).reshape(-1,1), axis=0).ravel()
     
@@ -97,6 +100,7 @@ def test(nets, args):
             # feature vector 
             vec = get_feature_vector(img, pred, args)
             outDict[filename]=vec
+            print('Done! for file: {}'.format(filename))
 
     with open('../semantic_features.pickle', 'wb') as handle:
         pickle.dump(outDict, handle, protocol=pickle.HIGHEST_PROTOCOL)
@@ -123,7 +127,7 @@ def main(args):
     # single pass
     test(nets, args)
 
-    print('Done! Output is saved in {}'.format(args.result))
+    # print('Done! Output is saved in {}'.format(args.result))
 
 
 if __name__ == '__main__':
