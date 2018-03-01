@@ -1,0 +1,8 @@
+{
+	"extract_features": "false",
+	"x_file": "x_data.pickle",
+	"vgg_file": "vgg.pickle",
+	"gistFile": "gists.txt",
+	"semF_file": "semantic_features.pickle",
+	"best_model": "model-198500"
+}

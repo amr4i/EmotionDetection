@@ -99,24 +99,22 @@ def get_features(training_file ,directory, VGG_feature_file="vgg.pickle", gistFi
 		return features, labels
 
 
-def get_prediction_features(training_file ,directory, VGG_feature_file="vgg.pickle", gistFile="gists.txt", semF_file='sematic_features.pickle'):
+def get_prediction_features(test_file, directory, VGG_feature_file="vgg.pickle", gistFile="gists.txt", semF_file='sematic_features.pickle'):
 	features = []
 	labels = []
 	
-	with open(training_file, 'r') as trainFile:
+	with open(test_file, 'r') as testFile:
 		
-		files = trainFile.readlines()
+		files = testFile.readlines()
 		load_gistfile(gistFile)
 		load_semantic_features(semF_file)
 		load_vgg_features(VGG_feature_file)
-		for file in files:
-			filename, _ = file.split(",")
+		for filename in files:
 			filepath = os.path.join(directory, filename)
 			if not os.path.isabs(filepath):
 				filepath = os.path.join(os.path.dirname(__file__), filepath)
 			feature_vector = extract_feature_vector(filepath)
 			features.append(feature_vector)
-			
 		
 		return features
 	
