@@ -10,7 +10,7 @@
 
 import os
 import sys
-import pickle
+import cPickle as pickle
 import tensorflow as tf
 import numpy as np
 from scipy.misc import imread, imresize
@@ -258,7 +258,7 @@ class vgg16:
             # print i, k, np.shape(weights[k])
             sess.run(self.parameters[i].assign(weights[k]))
 
-def predict(imgs_file, imgs_dir, path_to_weights="vgg16_weights.npz"):
+def predict(imgs_file, imgs_dir, path_to_weights="vgg16_weights.npz", ftype="train"):
     sess = tf.Session()
     # dir_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     imgs = tf.placeholder(tf.float32, [None, 224, 224, 3])
@@ -270,8 +270,11 @@ def predict(imgs_file, imgs_dir, path_to_weights="vgg16_weights.npz"):
     with open(imgs_file , 'r') as trainFile:
         files = trainFile.readlines()
         for file in files:
-            filename, file_label = file.split(",")
-            filenames.append(filename)
+            try:
+                filename, file_label = file.split(",")
+            except ValueError:
+                filename = file.strip()
+            filenames.append(filename.strip())
             imgPath = os.path.join(imgs_dir, filename)
 
             img = imread(imgPath, mode="RGB")
@@ -296,7 +299,7 @@ def predict(imgs_file, imgs_dir, path_to_weights="vgg16_weights.npz"):
     # print len(outDict)
     # print outDict['Sn133.bmp']
     # return outDict
-    with open('../vgg.pickle', 'wb') as handle:
+    with open('../vgg_'+ftype+'.pickle', 'wb') as handle:
         pickle.dump(outDict, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
 
@@ -305,5 +308,6 @@ if __name__ == '__main__':
     imgsFile = sys.argv[1]   
     imgsDir = sys.argv[2]
     vggWeights = sys.argv[3]
-    predict(imgsFile, imgsDir, vggWeights)
+    ftype = sys.argv[4]
+    predict(imgsFile, imgsDir, vggWeights, ftype)
     # img = imread(imgPath, mode="RGB")

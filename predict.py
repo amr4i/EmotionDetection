@@ -33,13 +33,17 @@ with tf.Session() as sess:
 	saver.restore(sess,tf.train.latest_checkpoint(checkpoint_dir))
 
 	graph = tf.get_default_graph()
-	prediction = graph.get_tensor_by_name("output-layer/prediction:0")
+	# for i in graph.get_operations():
+	# 	if 'prediction' in str(i):
+	# 		print i
 	input_x = graph.get_tensor_by_name("input_x:0")
+	prediction = graph.get_tensor_by_name("prediction/BiasAdd:0")
 	output = sess.run(prediction , feed_dict={input_x: x_pred})
+	# print output
 
 with open(test_file, 'r') as f:
 	names = f.readlines()
 
 with open("results.txt", "w") as g:
 	for i in range(0,len(names)):
-		g.write(names[i].strip()+","+str(output[i][0])+"\n")
+		g.write(names[i].strip()+","+str(output[i][0]*100.0)+"\n")

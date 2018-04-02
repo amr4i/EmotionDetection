@@ -76,7 +76,10 @@ def test(nets, args):
         files = trainFile.readlines()
         
         for file in files:
-            filename, file_label = file.split(",")
+            try:    
+                filename, file_label = file.split(",")
+            except ValueError:
+                filename = file.strip()
             filepath = os.path.join(args.test_img_directory, filename)
 
             # loading image, resize, convert to tensor

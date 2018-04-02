@@ -94,7 +94,7 @@ def get_features(training_file ,directory, VGG_feature_file="vgg.pickle", gistFi
 				filepath = os.path.join(os.path.dirname(__file__), filepath)
 			feature_vector = extract_feature_vector(filepath)
 			features.append(feature_vector)
-			labels.append(file_label)
+			labels.append(file_label/100.0)
 		
 		return features, labels
 

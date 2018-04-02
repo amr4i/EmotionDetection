@@ -1,5 +1,6 @@
 import os
 import sys
+import tqdm
 import json
 import time
 import pickle
@@ -91,7 +92,6 @@ def train_imageAVmodel():
         with sess.as_default():
             imageAV = ImageAVmodel(
                 input_length = x_train.shape[1],
-                num_hidden_layers = params['num_hidden_layers'],
                 num_neurons_in_layers = params['num_neurons_in_layers'] )
 
             global_step = tf.Variable(0, name="global_step", trainable=False)
@@ -108,6 +108,10 @@ def train_imageAVmodel():
             if not os.path.exists(checkpoint_dir):
                 os.makedirs(checkpoint_dir)
             saver = tf.train.Saver(tf.global_variables())
+
+            if params['warm_start'] == 'true':
+                saver.restore(sess, params['save_path'])
+                logginf.info('Model loaded from {}'.format(params['save_path']))
 
 
             # One training step: train the model with one batch
@@ -153,13 +157,14 @@ def train_imageAVmodel():
                         total_val_loss += val_loss
 
                     writer.add_summary(_val_loss_summary, current_step)
-                    avg_val_loss = total_val_loss/len(y_val)
-                    logging.debug('At step {},  Total loss on val set: {}'.format(current_step, total_val_loss))
-                    logging.info('At step {}, Average loss on val set: {}'.format(current_step, avg_val_loss))
+
+                    # avg_val_loss = total_val_loss/len(y_val)
+                    logging.info('At step {},  Total loss on val set: {}'.format(current_step, total_val_loss))
+                    # logging.info('At step {}, Average loss on val set: {}'.format(current_step, avg_val_loss))
 
                     """ save the model if it is the best based on loss on the val set """
-                    if avg_val_loss <= min_loss:
-                        min_loss, min_at_step = avg_val_loss, current_step
+                    if total_val_loss <= min_loss:
+                        min_loss, min_at_step = total_val_loss, current_step
                         path = saver.save(sess, checkpoint_prefix, global_step=current_step)
                         logging.debug('Saved model {} at step {}'.format(path, min_at_step))
                         logging.debug('Best accuracy {} at step {}'.format(min_loss, min_at_step))
@@ -167,14 +172,15 @@ def train_imageAVmodel():
             """ predict x_test (batch by batch)"""
             test_batches = batch_iter(list(zip(x_test, y_test)), params['batch_size'], 1)
             total_test_loss = 0.0
+            logging.info("Testing Now.")
             for test_batch in test_batches:
                 x_test_batch, y_test_batch = zip(*test_batch)
                 test_loss, _test_loss_summary = val_step(x_test_batch, y_test_batch)
                 total_test_loss += test_loss
 
-            avg_test_loss = total_test_loss/len(y_test)
-            logging.critical('Total loss on the test set is {} based on the best model {}'.format(total_test_loss, path))
-            logging.critical('Average loss on test set is {} based on the best model {}'.format(avg_test_loss, path))
+            # avg_test_loss = total_test_loss/len(y_test)
+            logging.info('Total loss on the test set is {} based on the best model {}'.format(total_test_loss, path))
+            # logging.critical('Average loss on test set is {} based on the best model {}'.format(avg_test_loss, path))
             logging.info('The training is complete.')
 
             """ saving the model """
