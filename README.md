@@ -15,20 +15,23 @@ Here is a [tutorial](http://www.codebind.com/cpp-tutorial/install-opencv-ubuntu-
 1. To avoid loading of model weights again and again, we first pre-compute certain features for all images, that will be used in making the feature vector of the image. 
 	- GIST Feature Extraction: 
 		- Run the code segment:  
-``` 
-	cd GIST 
-	make IMAGEPATH=<path_to_directory_containing_all_images>
-	make clean
-```	
+
+		``` 
+			cd GIST 
+			make IMAGEPATH=<path_to_directory_containing_all_images>
+			make clean
+		```	
+		
 		- This will create a file in the main folder named **gists.txt**, that contains the GIST descriptor of each image, one per line, in the format:
 			> <FILENAME>:<GIST_Descriptor>
 	- VGG Object Feature Extraction:
-		- Run the code segment:
-```
-	cd VGG
-	python vgg16.py <imageFile> <imagesDir> <VGG_weights>
-```
-		where *imageFile* = a file containing names of images and their A/V values separated by a comma, and *imagesDir* = the folder containing all training images. 
+		- For the following command, *imageFile* = a file containing names of images and their A/V values separated by a comma, and *imagesDir* = the folder containing all training images. Run the code segment:
+
+			```
+				cd VGG
+				python vgg16.py <imageFile> <imagesDir> <VGG_weights>
+			```
+
 		- This will create a pickle in the main folder named **vgg.pickle**, that holds a python dictionary with names of images being mapped to their VGG object features.
 		- More information about this VGG Descriptor can be found [here](http://www.cs.toronto.edu/~frossard/post/vgg16/).
 	- Semantic Features Extraction:
