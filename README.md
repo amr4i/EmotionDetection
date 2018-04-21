@@ -23,7 +23,7 @@ Here is a [tutorial](http://www.codebind.com/cpp-tutorial/install-opencv-ubuntu-
 		```	
 		
 		- This will create a file in the main folder named **gists.txt**, that contains the GIST descriptor of each image, one per line, in the format:
-			> <FILENAME>:<GIST_Descriptor>
+			`<FILENAME>:<GIST_Descriptor>`
 	- VGG Object Feature Extraction:
 		- For the following command, *imageFile* = a file containing names of images and their A/V values separated by a comma, and *imagesDir* = the folder containing all training images. Run the code segment:
 
