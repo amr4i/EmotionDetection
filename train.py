@@ -1,3 +1,13 @@
+########################################################################################
+# Author: Amrit Singhal, Year: 2018                                                    #
+# Emotion Extraction from Images in the Circumplex model: Arousal and Valence values   #
+# Details:                                                                             #
+# Python Implementation of the paper 'Building Emotion Machines: Recognizing Image     #
+# Emotion through Deep Neural Networks' by Hye-Rin Kim, Yeong-Seok Kim, Seon Joo Kim,  #
+# and In-Kwon Lee.                                                                     #
+# Model from https://github.com/amr4i/EmotionDetection                                 #
+########################################################################################
+
 import os
 import sys
 import tqdm

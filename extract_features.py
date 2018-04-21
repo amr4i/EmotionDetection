@@ -1,3 +1,13 @@
+########################################################################################
+# Author: Amrit Singhal, Year: 2018                                                    #
+# Emotion Extraction from Images in the Circumplex model: Arousal and Valence values   #
+# Details:                                                                             #
+# Python Implementation of the paper 'Building Emotion Machines: Recognizing Image     #
+# Emotion through Deep Neural Networks' by Hye-Rin Kim, Yeong-Seok Kim, Seon Joo Kim,  #
+# and In-Kwon Lee.                                                                     #
+# Model from https://github.com/amr4i/EmotionDetection                                 #
+########################################################################################
+
 import os
 import sys
 import cv2
@@ -31,10 +41,6 @@ def load_vgg_features(file):
 		vgg_features = pickle.load(handle)
 	
 
-# def get_vgg_object_features(img, path_to_weights):
-# 	vggDesc = vgg.predict(img, path_to_weights)
-# 	return vggDesc
-
 def get_lbp(image, numPoints=57, radius=4):
 	lbpDesc = LocalBinaryPatterns(numPoints, radius)
 	hist = lbpDesc.describe(image)
@@ -62,15 +68,9 @@ def extract_feature_vector(imagepath):
 	print "Extracting Semantic Features...."
 	Sem_Desc = sem_features[imagename]
 	
-	# print "-------------> LBP Descriptor: \n", LBP_Desc
-	# print "-------------> VGG Descriptor: \n", VGG_Desc
-	
-	# TO BE FINALIZED
+	# Concatenating into a single feature vector	
 	feature_vector = np.concatenate((LBP_Desc, VGG_Desc, GIST_Desc, Sem_Desc))
-	# print np.size(feature_vector)
 	return feature_vector
-
-
 
 
 """ 
