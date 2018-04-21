@@ -44,11 +44,13 @@ Here is a [tutorial](http://www.codebind.com/cpp-tutorial/install-opencv-ubuntu-
 	python train.py <imageFile> <imagesDir>
 ```
 
-5. This will store the model in a *modelData* named directory, in the parent directory of the current folder. The name of folder in which contains a *timestamp* that will be used to recognise the stroed model during the prediction. 
+5. This will store the model in a *modelData* named directory, in the parent directory of the current folder. The name of folder in which contains a *timestamp* that will be used to recognise the stored model during the prediction. 
 
 ####Prediction
 
 1. Again, go through the entire process of feature exrraction for the images for which the prediction needs to be made. 
+
+2. Set the prediction parameters in the file _test_params.json_, as required. 
 
 2. Run the prediction code:
 ```
