@@ -3,14 +3,14 @@
 This is a python implementation for extracting arousal and valence values from images, as presented in the work: 
 [Building Emotional Machines: Recognizing Image Emotions through Deep Neural Networks](https://arxiv.org/pdf/1705.07543.pdf) by Hye-Rin Kim, Yeong-Seok Kim, Seon Joo Kim, In-Kwon Lee. 
 
-##Pre-requisites
+## Pre-requisites
 
 1. Make sure openCV is installed on both python and C++. 
 Here is a [tutorial](http://www.codebind.com/cpp-tutorial/install-opencv-ubuntu-cpp/) to installing OpenCV on C++.
 
-##Instructions
+## Instructions
 
-####Training
+#### Training
 
 1. To avoid loading of model weights again and again, we first pre-compute certain features for all images, that will be used in making the feature vector of the image. 
 	- GIST Feature Extraction: 
@@ -46,7 +46,7 @@ Here is a [tutorial](http://www.codebind.com/cpp-tutorial/install-opencv-ubuntu-
 
 5. This will store the model in a *modelData* named directory, in the parent directory of the current folder. The name of folder in which contains a *timestamp* that will be used to recognise the stored model during the prediction. 
 
-####Prediction
+#### Prediction
 
 1. Again, go through the entire process of feature exrraction for the images for which the prediction needs to be made. 
 
