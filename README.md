@@ -7,6 +7,8 @@ This is a python implementation for extracting arousal and valence values from i
 
 1. Make sure openCV is installed on both python and C++. 
 Here is a [tutorial](http://www.codebind.com/cpp-tutorial/install-opencv-ubuntu-cpp/) to installing OpenCV on C++.
+2. Tensorflow 
+3. scikit-learn 
 
 ## Instructions
 
